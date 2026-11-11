@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FocusFlow | Beat Procrastination</title>
+    <style>
+      :root {
+        --bg: #f5f7ff;
+        --panel: #ffffff;
+        --panel-alt: #eef3ff;
+        --primary: #5d6bff;
+        --primary-dark: #3d4fe3;
+        --secondary: #9ad0c2;
+        --accent: #ffb86c;
+        --danger: #ff7d7d;
+        --text: #1f2937;
+        --muted: #667085;
+        --border: #e5e7eb;
+        --shadow: 0 18px 45px rgba(93, 107, 255, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(93, 107, 255, 0.12), transparent 28%),
+          linear-gradient(180deg, #f9fbff 0%, #eef3ff 100%);
+        color: var(--text);
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(8px);
+        background: rgba(247, 249, 255, 0.78);
+        border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 74px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        font-size: 1.15rem;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        box-shadow: var(--shadow);
+        font-size: 1.1rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .nav-links a:hover {
+        color: var(--primary);
+      }
+
+      .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 12px 22px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+        transition: transform 0.2s ease;
+      }
+
+      .nav-cta:hover {
+        transform: translateY(-1px);
+      }
+
+      .hero {
+        padding: 72px 0 56px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 38px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        background: rgba(93, 107, 255, 0.12);
+        color: var(--primary-dark);
+        border: 1px solid rgba(93, 107, 255, 0.12);
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 4vw, 4.5rem);
+        line-height: 1.06;
+        letter-spacing: -0.05em;
+        margin: 20px 0 18px;
+      }
+
+      .hero-copy {
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.8;
+        max-width: 560px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+      }
+
+      .button-primary,
+      .button-secondary {
+        border-radius: 999px;
+        padding: 14px 24px;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        transition: transform 0.2s ease;
+      }
+
+      .button-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        box-shadow: var(--shadow);
+      }
+
+      .button-secondary {
+        background: white;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .button-primary:hover,
+      .button-secondary:hover {
+        transform: translateY(-1px);
+      }
+
+      .mini-stats {
+        display: flex;
+        gap: 22px;
+        padding-top: 30px;
+        flex-wrap: wrap;
+      }
+
+      .mini-stat {
+        min-width: 120px;
+      }
+
+      .mini-stat strong {
+        display: block;
+        font-size: 1.6rem;
+        margin-bottom: 4px;
+      }
+
+      .mini-stat span {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .hero-card {
+        background: linear-gradient(180deg, #ffffff, #f8f9ff);
+        border: 1px solid rgba(93, 107, 255, 0.08);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: 24px;
+      }
+
+      .hero-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(154, 208, 194, 0.18);
+        color: #146c63;
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #3ecf8e;
+      }
+
+      .focus-meter {
+        background: var(--panel-alt);
+        border-radius: 20px;
+        padding: 18px 18px 10px;
+      }
+
+      .meter-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .meter-row strong {
+        font-size: 1.15rem;
+      }
+
+      .meter-row span {
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .progress-bar {
+        height: 12px;
+        border-radius: 999px;
+        background: rgba(93, 107, 255, 0.1);
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        width: 72%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+      }
+
+      .task-preview {
+        margin-top: 20px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .preview-task {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+      }
+
+      .preview-task small {
+        color: var(--muted);
+      }
+
+      .check {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #eaf8ef;
+        border: 1px solid #cfeed8;
+        display: grid;
+        place-items: center;
+        color: #1b9d5b;
+        font-weight: 800;
+      }
+
+      .features {
+        padding: 26px 0 80px;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 26px;
+      }
+
+      .section-title h2 {
+        font-size: clamp(2rem, 3vw, 3rem);
+        letter-spacing: -0.04em;
+        margin-bottom: 12px;
+      }
+
+      .section-title p {
+        color: var(--muted);
+        margin: 0 auto;
+        max-width: 620px;
+        line-height: 1.7;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(229, 231, 235, 0.9);
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+      }
+
+      .icon-box {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        margin-bottom: 18px;
+        display: grid;
+        place-items: center;
+        font-size: 1.4rem;
+        background: linear-gradient(135deg, rgba(93,107,255,0.13), rgba(154,208,194,0.2));
+      }
+
+      .feature-card h3 {
+        margin: 0 0 12px;
+        font-size: 1.3rem;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .dashboard {
+        padding: 8px 0 90px;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 24px;
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(229, 231, 235, 0.9);
+        border-radius: 28px;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.05);
+      }
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 22px 22px 10px;
+      }
+
+      .panel-header h3 {
+        margin: 0;
+        font-size: 1.3rem;
+      }
+
+      .tag {
+        background: rgba(93, 107, 255, 0.1);
+        color: var(--primary);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-weight: 700;
+        font-size: 0.75rem;
+      }
+
+      .planner {
+        padding: 12px 22px 22px;
+      }
+
+      .task-form {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .task-form input {
+        flex: 1;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-size: 1rem;
+        outline: none;
+        background: #fff;
+      }
+
+      .task-form input:focus {
+        border-color: rgba(93, 107, 255, 0.5);
+        box-shadow: 0 0 0 4px rgba(93, 107, 255, 0.08);
+      }
+
+      .task-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .task-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 12px 14px;
+      }
+
+      .task-main {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+      }
+
+      .task-check {
+        width: 22px;
+        height: 22px;
+        border-radius: 8px;
+        border: 1.5px solid var(--primary);
+        display: inline-block;
+        position: relative;
+        background: rgba(93, 107, 255, 0.05);
+        cursor: pointer;
+      }
+
+      .task-item.completed .task-check {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-color: transparent;
+      }
+
+      .task-item.completed .task-check::after {
+        content: "✓";
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 800;
+      }
+
+      .task-item.completed .task-text {
+        text-decoration: line-through;
+        color: var(--muted);
+      }
+
+      .task-text {
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
+      .task-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .task-delete {
+        background: transparent;
+        border: none;
+        color: var(--danger);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 4px 8px;
+      }
+
+      .timer-panel {
+        padding: 20px 22px 22px;
+      }
+
+      .timer-display {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: clamp(2.8rem, 5vw, 4.2rem);
+        font-weight: 800;
+        letter-spacing: -0.06em;
+        margin: 18px 0 26px;
+        color: var(--text);
+      }
+
+      .timer-controls {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .timer-btn {
+        border: none;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .timer-btn.primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .timer-btn.secondary {
+        background: #eef3ff;
+        color: var(--primary);
+      }
+
+      .timer-btn.ghost {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      .focus-mode {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 22px;
+        background: linear-gradient(135deg, rgba(93,107,255,0.07), rgba(154,208,194,0.12));
+        border-radius: 18px;
+        border: 1px solid rgba(93, 107, 255, 0.08);
+        padding: 14px 16px;
+      }
+
+      .focus-info {
+        font-weight: 700;
+      }
+
+      .focus-info small {
+        display: block;
+        font-size: 0.76rem;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      .progress-stats {
+        padding: 22px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .stat-box {
+        background: #f7f9ff;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+
+      .stat-box strong {
+        display: block;
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+      }
+
+      .stat-box span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .habit-list {
+        margin-top: 18px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .habit-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+
+      .habit-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+      }
+
+      .habit-badge {
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: rgba(93, 107, 255, 0.08);
+        color: var(--primary);
+        font-weight: 800;
+      }
+
+      .habit-score {
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 700;
+      }
+
+      .footer {
+        padding: 24px 0 50px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .hero-grid,
+        .dashboard-grid,
+        .feature-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .hero {
+          padding-top: 52px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .task-form {
+          flex-direction: column;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .button-primary,
+        .button-secondary,
+        .nav-cta {
+          width: 100%;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .brand {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <div class="brand">
+          <div class="brand-mark">F</div>
+          <span>FocusFlow</span>
+        </div>
+
+        <nav class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#planner">Planner</a>
+          <a href="#focus">Focus session</a>
+          <a href="#progress">Progress</a>
+        </nav>
+
+        <button class="nav-cta">Start Now</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="eyebrow">Beat procrastination</span>
+            <h1>Turn big work into one focused step.</h1>
+            <p class="hero-copy">
+              FocusFlow helps students break down assignments, stay on track during short study sprints,
+              and build confident daily momentum without feeling overwhelmed.
+            </p>
+
+            <div class="hero-actions">
+              <button class="button-primary" id="startTodayBtn">Start today</button>
+              <button class="button-secondary">See how it works</button>
+            </div>
+
+            <div class="mini-stats">
+              <div class="mini-stat">
+                <strong>12k+</strong>
+                <span>students helped</span>
+              </div>
+              <div class="mini-stat">
+                <strong>4.9/5</strong>
+                <span>focus rating</span>
+              </div>
+              <div class="mini-stat">
+                <strong>25m</strong>
+                <span>ideal sprint</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-card">
+            <div class="hero-card-top">
+              <strong>Today's momentum</strong>
+              <span class="status-pill"><span class="status-dot"></span> On track</span>
+            </div>
+
+            <div class="focus-meter">
+              <div class="meter-row">
+                <strong>Study streak</strong>
+                <span>72%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill"></div>
+              </div>
+            </div>
+
+            <div class="task-preview">
+              <div class="preview-task">
+                <div>
+                  <strong>Read chapter 4</strong><br />
+                  <small>10:30 AM</small>
+                </div>
+                <div class="check">✓</div>
+              </div>
+
+              <div class="preview-task">
+                <div>
+                  <strong>Finish chemistry notes</strong><br />
+                  <small>11:00 AM</small>
+                </div>
+                <div class="check">✓</div>
+              </div>
+
+              <div class="preview-task">
+                <div>
+                  <strong>Draft essay outline</strong><br />
+                  <small>11:30 AM</small>
+                </div>
+                <div class="check">✦</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="container">
+          <div class="section-title">
+            <h2>Build better study habits</h2>
+            <p>
+              Small actions create a routine. FocusFlow helps students flip overwhelm into action
+              by making tasks clear, manageable, and motivating.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="icon-box">🧩</div>
+              <h3>Break tasks down</h3>
+              <p>
+                A massive assignment becomes a few realistic steps, so your brain doesn’t freeze
+                before the work starts.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon-box">⏱️</div>
+              <h3>Study in short sprints</h3>
+              <p>
+                Use 25-minute focus sessions with built-in breaks that keep your energy steady and
+                your attention sharp.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon-box">📈</div>
+              <h3>Track real progress</h3>
+              <p>
+                See what you completed today and build motivation from small wins instead of
+                judging yourself for missed time.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard">
+        <div class="container dashboard-grid">
+          <div class="panel" id="planner">
+            <div class="panel-header">
+              <h3>Today’s plan</h3>
+              <span class="tag">3 tasks</span>
+            </div>
+
+            <div class="planner">
+              <form class="task-form" id="taskForm">
+                <input id="taskInput" type="text" placeholder="Add a task for today..." />
+                <button type="submit" class="button-primary">Add task</button>
+              </form>
+
+              <div class="task-list" id="taskList">
+                <div class="task-item completed">
+                  <div class="task-main">
+                    <span class="task-check" aria-label="Complete task"></span>
+                    <div class="task-text">Review biology flashcards</div>
+                  </div>
+                  <div class="task-meta">
+                    <span>15 min</span>
+                    <button class="task-delete" aria-label="Delete task">×</button>
+                  </div>
+                </div>
+
+                <div class="task-item">
+                  <div class="task-main">
+                    <span class="task-check" aria-label="Complete task"></span>
+                    <div class="task-text">Write introduction paragraph</div>
+                  </div>
+                  <div class="task-meta">
+                    <span>25 min</span>
+                    <button class="task-delete" aria-label="Delete task">×</button>
+                  </div>
+                </div>
+
+                <div class="task-item">
+                  <div class="task-main">
+                    <span class="task-check" aria-label="Complete task"></span>
+                    <div class="task-text">Read math chapter summary</div>
+                  </div>
+                  <div class="task-meta">
+                    <span>20 min</span>
+                    <button class="task-delete" aria-label="Delete task">×</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" id="focus">
+            <div class="panel-header">
+              <h3>Focus session</h3>
+              <span class="tag">25 min</span>
+            </div>
+
+            <div class="timer-panel">
+              <div class="timer-display" id="timerDisplay">25:00</div>
+
+              <div class="timer-controls">
+                <button class="timer-btn primary" id="startPauseBtn">Start</button>
+                <button class="timer-btn secondary" id="resetBtn">Reset</button>
+                <button class="timer-btn ghost" id="breakBtn">Break</button>
+              </div>
+
+              <div class="focus-mode">
+                <div class="focus-info">
+                  Current task
+                  <small>Write introduction paragraph</small>
+                </div>
+                <div>💡</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" id="progress">
+        <div class="container">
+          <div class="section-title">
+            <h2>Stay motivated with visible progress</h2>
+            <p>
+              Students do better when they can see momentum. Small wins build confidence and keep
+              procrastination from taking over your day.
+            </p>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Progress snapshot</h3>
+                <span class="tag">This week</span>
+              </div>
+
+              <div class="progress-stats">
+                <div class="stats-grid">
+                  <div class="stat-box">
+                    <strong>8</strong>
+                    <span>Focus sessions</span>
+                  </div>
+                  <div class="stat-box">
+                    <strong>5</strong>
+                    <span>Tasks completed</span>
+                  </div>
+                  <div class="stat-box">
+                    <strong>4/5</strong>
+                    <span>Study days</span>
+                  </div>
+                  <div class="stat-box">
+                    <strong>86%</strong>
+                    <span>Goal consistency</span>
+                  </div>
+                </div>
+
+                <div class="habit-list">
+                  <div class="habit-item">
+                    <div class="habit-left">
+                      <span class="habit-badge">✓</span>
+                      <span>Started before 10 AM</span>
+                    </div>
+                    <span class="habit-score">4/5</span>
+                  </div>
+
+                  <div class="habit-item">
+                    <div class="habit-left">
+                      <span class="habit-badge">◎</span>
+                      <span>Completed distraction-free focus</span>
+                    </div>
+                    <span class="habit-score">5/5</span>
+                  </div>
+
+                  <div class="habit-item">
+                    <div class="habit-left">
+                      <span class="habit-badge">★</span>
+                      <span>Finished one priority task</span>
+                    </div>
+                    <span class="habit-score">3/5</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Helpful reminders</h3>
+                <span class="tag">Gentle nudges</span>
+              </div>
+
+              <div class="progress-stats">
+                <div class="habit-list">
+                  <div class="habit-item">
+                    <div class="habit-left">
+                      <span class="habit-badge">1</span>
+                      <span>Start with the hardest task for 10 minutes</span>
+                    </div>
+                  </div>
+
+                  <div class="habit-item">
+                    <div class="habit-left">
+                      <span class="habit-badge">2</span>
+                      <span>Turn off notifications and use a timer</span>
+                    </div>
+                  </div>
+
+                  <div class="habit-item">
+                    <div class="habit-left">
+                      <span class="habit-badge">3</span>
+                      <span>Reward yourself after each completed session</span>
+                    </div>
+                  </div>
+
+                  <div class="habit-item">
+                    <div class="habit-left">
+                      <span class="habit-badge">4</span>
+                      <span>Focus on progress, not perfection</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">FocusFlow © 2026 — Make studying feel lighter.</div>
+    </footer>
+
+    <script>
+      const taskForm = document.getElementById("taskForm");
+      const taskInput = document.getElementById("taskInput");
+      const taskList = document.getElementById("taskList");
+      const timerDisplay = document.getElementById("timerDisplay");
+      const startPauseBtn = document.getElementById("startPauseBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const breakBtn = document.getElementById("breakBtn");
+      const startTodayBtn = document.getElementById("startTodayBtn");
+
+      const state = {
+        minutes: 25,
+        seconds: 0,
+        timerRef: null,
+        isRunning: false,
+        isBreak: false,
+      };
+
+      function formatTime(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+      }
+
+      function updateTimerDisplay() {
+        const total = state.minutes * 60 + state.seconds;
+        timerDisplay.textContent = formatTime(total);
+      }
+
+      function tick() {
+        if (state.seconds === 0) {
+          if (state.minutes === 0) {
+            clearInterval(state.timerRef);
+            state.isRunning = false;
+            startPauseBtn.textContent = "Start";
+            alert(state.isBreak ? "Break time is over! Ready for the next focus session?" : "Focus session complete! Great job.");
+            state.isBreak = false;
+            state.minutes = 25;
+            state.seconds = 0;
+            updateTimerDisplay();
+            return;
+          }
+
+          state.minutes -= 1;
+          state.seconds = 59;
+        } else {
+          state.seconds -= 1;
+        }
+
+        updateTimerDisplay();
+      }
+
+      function startTimer() {
+        if (state.isRunning) {
+          clearInterval(state.timerRef);
+          state.isRunning = false;
+          startPauseBtn.textContent = "Resume";
+          return;
+        }
+
+        state.isRunning = true;
+        startPauseBtn.textContent = "Pause";
+        state.timerRef = setInterval(tick, 1000);
+      }
+
+      function resetTimer() {
+        clearInterval(state.timerRef);
+        state.isRunning = false;
+        startPauseBtn.textContent = "Start";
+        state.minutes = state.isBreak ? 5 : 25;
+        state.seconds = 0;
+        updateTimerDisplay();
+      }
+
+      function switchBreakMode() {
+        clearInterval(state.timerRef);
+        state.isRunning = false;
+        startPauseBtn.textContent = "Start";
+        state.isBreak = !state.isBreak;
+        state.minutes = state.isBreak ? 5 : 25;
+        state.seconds = 0;
+        updateTimerDisplay();
+        breakBtn.textContent = state.isBreak ? "Focus" : "Break";
+      }
+
+      taskForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const value = taskInput.value.trim();
+        if (!value) return;
+
+        const item = document.createElement("div");
+        item.className = "task-item";
+
+        item.innerHTML = `
+          <div class="task-main">
+            <span class="task-check" aria-label="Complete task"></span>
+            <div class="task-text">${value}</div>
+          </div>
+          <div class="task-meta">
+            <span>15 min</span>
+            <button class="task-delete" aria-label="Delete task">×</button>
+          </div>
+        `;
+
+        const check = item.querySelector(".task-check");
+        const deleteBtn = item.querySelector(".task-delete");
+
+        check.addEventListener("click", function () {
+          item.classList.toggle("completed");
+        });
+
+        deleteBtn.addEventListener("click", function () {
+          item.remove();
+        });
+
+        taskList.appendChild(item);
+        taskInput.value = "";
+      });
+
+      taskList.addEventListener("click", function (event) {
+        const check = event.target.closest(".task-check");
+        const deleteBtn = event.target.closest(".task-delete");
+        const parent = event.target.closest(".task-item");
+
+        if (check && parent) {
+          parent.classList.toggle("completed");
+        }
+
+        if (deleteBtn && parent) {
+          parent.remove();
+        }
+      });
+
+      startPauseBtn.addEventListener("click", startTimer);
+      resetBtn.addEventListener("click", resetTimer);
+      breakBtn.addEventListener("click", switchBreakMode);
+      startTodayBtn.addEventListener("click", function () {
+        document.getElementById("planner").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      updateTimerDisplay();
+    </script>
+  </body>
+</html>
